@@ -1,0 +1,1419 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A~C 自然發音 × 交通工具 ｜ 英語互動學習</title>
+<style>
+  :root{
+    --bg:#eef3fa;
+    --ink:#16213a;
+    --muted:#64748b;
+    --card:#ffffff;
+    --a:#f59e0b;
+    --b:#ef4444;
+    --c:#2563eb;
+    --ok:#16a34a;
+    --bad:#dc2626;
+    --line:#e2e8f0;
+    --radius:20px;
+    --shadow:0 8px 24px rgba(15,23,42,.09);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:"Segoe UI","PingFang TC","Microsoft JhengHei","Noto Sans TC",system-ui,sans-serif;
+    background:
+      radial-gradient(1200px 600px at 10% -10%, #ffe9c9 0%, transparent 55%),
+      radial-gradient(1000px 500px at 100% 0%, #d9e8ff 0%, transparent 50%),
+      var(--bg);
+    color:var(--ink);
+    min-height:100vh;
+    padding-bottom:60px;
+  }
+  .wrap{max-width:1120px;margin:0 auto;padding:0 16px}
+
+  /* ---------- Header ---------- */
+  header{
+    background:linear-gradient(135deg,#2563eb 0%,#7c3aed 55%,#db2777 100%);
+    color:#fff;padding:26px 0 18px;box-shadow:0 6px 22px rgba(37,99,235,.28);
+  }
+  header h1{margin:0 0 6px;font-size:clamp(20px,3.4vw,30px);letter-spacing:.5px}
+  header p{margin:0;opacity:.92;font-size:14px}
+  .badge{
+    display:inline-block;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.35);
+    padding:2px 10px;border-radius:999px;font-size:12px;margin-right:6px
+  }
+  .settings{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px;align-items:center}
+  .settings label{font-size:13px;opacity:.95}
+  select{
+    background:rgba(255,255,255,.95);color:#16213a;border:0;border-radius:10px;
+    padding:7px 10px;font-size:14px;font-family:inherit;cursor:pointer;max-width:230px
+  }
+  .hbtn{
+    background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);color:#fff;
+    font-family:inherit;font-size:13px;font-weight:700;padding:7px 12px;border-radius:10px;cursor:pointer;transition:.15s
+  }
+  .hbtn:hover{background:rgba(255,255,255,.32)}
+  .hbtn.stop{background:rgba(220,38,38,.45);border-color:rgba(255,180,180,.6)}
+  .hbtn.stop:hover{background:rgba(220,38,38,.7)}
+  .vstatus{
+    font-size:12.5px;font-weight:700;padding:6px 11px;border-radius:999px;
+    background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);white-space:nowrap
+  }
+  .vstatus.ok{background:rgba(22,163,74,.4);border-color:rgba(134,239,172,.6)}
+  .vstatus.bad{background:rgba(220,38,38,.5);border-color:rgba(254,202,202,.7)}
+  .vstatus.busy{background:rgba(250,204,21,.45);border-color:rgba(253,230,138,.7)}
+  .notice{
+    background:#fff7ed;border:1px solid #fdba74;color:#9a3412;border-radius:12px;
+    padding:10px 14px;font-size:14px;margin:14px 0;display:none
+  }
+  .notice.show{display:block}
+
+  /* ---------- Tabs ---------- */
+  nav.tabs{
+    display:flex;gap:8px;flex-wrap:wrap;margin:22px 0 18px;
+    background:#fff;padding:7px;border-radius:16px;box-shadow:var(--shadow)
+  }
+  nav.tabs button{
+    border:0;background:transparent;font-family:inherit;font-size:15px;font-weight:600;
+    padding:10px 16px;border-radius:11px;cursor:pointer;color:var(--muted);transition:.18s
+  }
+  nav.tabs button:hover{background:#f1f5f9;color:var(--ink)}
+  nav.tabs button.active{background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;box-shadow:0 4px 12px rgba(37,99,235,.35)}
+
+  /* ---------- Filters ---------- */
+  .filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+  .chip{
+    border:2px solid var(--line);background:#fff;font-family:inherit;font-size:14px;font-weight:600;
+    padding:8px 14px;border-radius:999px;cursor:pointer;color:var(--muted);transition:.16s
+  }
+  .chip:hover{border-color:#94a3b8}
+  .chip.active{color:#fff;border-color:transparent}
+  .chip.active[data-g="ALL"]{background:linear-gradient(135deg,#334155,#0f172a)}
+  .chip.active[data-g="A"]{background:var(--a)}
+  .chip.active[data-g="B"]{background:var(--b)}
+  .chip.active[data-g="C"]{background:var(--c)}
+  .spacer{flex:1}
+  .mini-btn{
+    border:1px solid var(--line);background:#fff;font-family:inherit;font-size:13px;font-weight:600;
+    color:var(--ink);padding:8px 14px;border-radius:12px;cursor:pointer;transition:.16s
+  }
+  .mini-btn:hover{background:#f8fafc;border-color:#cbd5e1}
+
+  /* ---------- Cards ---------- */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:16px}
+  .wcard{
+    background:var(--card);border-radius:var(--radius);padding:18px 16px 14px;box-shadow:var(--shadow);
+    text-align:center;border:2px solid transparent;cursor:pointer;position:relative;transition:.18s
+  }
+  .wcard:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(15,23,42,.14)}
+  .wcard .emoji{font-size:52px;line-height:1.1;display:block;margin-bottom:6px}
+  .wcard .word{font-size:23px;font-weight:800;letter-spacing:.5px}
+  .wcard .word .wl{display:inline-block;border-radius:7px;padding:0 1px;transition:transform .15s,background .15s}
+  .wcard .word .wl.hot{
+    background:#fde68a;color:#7c2d12;transform:translateY(-3px) scale(1.14);
+    box-shadow:0 5px 12px rgba(250,204,21,.55)
+  }
+  .act.busy{opacity:.6;pointer-events:none}
+  .act.rec{background:#fef2f2;color:#b91c1c}
+  .act.rec:hover{background:#fee2e2}
+  .act.recording{background:#dc2626;color:#fff;animation:recdot 1s infinite}
+  @keyframes recdot{0%,100%{box-shadow:0 0 0 0 rgba(220,38,38,.6)}50%{box-shadow:0 0 0 7px rgba(220,38,38,0)}}
+  .hasrec::after{content:'🎧';position:absolute;bottom:8px;right:10px;font-size:14px}
+  .toast{
+    position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);
+    background:rgba(15,23,42,.94);color:#fff;padding:11px 20px;border-radius:12px;font-size:14px;
+    font-weight:600;z-index:99;opacity:0;pointer-events:none;transition:.25s;box-shadow:0 8px 24px rgba(0,0,0,.3)
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .recToggle{display:flex;align-items:center;gap:6px;font-size:13px;background:rgba(255,255,255,.2);
+    border:1px solid rgba(255,255,255,.4);color:#fff;padding:6px 11px;border-radius:10px;cursor:pointer}
+  .recToggle input{accent-color:#22c55e;width:15px;height:15px;cursor:pointer}
+  .wcard .ipa{font-size:14px;color:var(--muted);margin-top:3px;font-family:"Segoe UI",Consolas,monospace}
+  .wcard .zh{font-size:15px;color:var(--ink);margin-top:5px;font-weight:600}
+  .wcard .sent{font-size:12.5px;color:var(--muted);margin-top:8px;line-height:1.5;min-height:38px}
+  .wcard .sent b{color:#7c3aed}
+  .sndrow{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:7px;justify-content:center}
+  .sndchip{
+    font-size:12px;font-weight:800;color:#fff;background:#64748b;padding:3px 10px;border-radius:999px;
+    font-family:Consolas,monospace
+  }
+  .sndchip.ex{background:#dc2626}
+  .sndnote{font-size:11.5px;color:#b91c1c;font-weight:700;line-height:1.4;text-align:left}
+  .tag{
+    position:absolute;top:10px;left:10px;font-size:11px;font-weight:800;color:#fff;
+    padding:3px 9px;border-radius:999px;letter-spacing:.5px
+  }
+  .learn{
+    position:absolute;top:9px;right:9px;width:28px;height:28px;border-radius:50%;
+    border:2px solid var(--line);background:#fff;cursor:pointer;font-size:14px;line-height:1;
+    display:flex;align-items:center;justify-content:center;color:transparent;transition:.16s
+  }
+  .learn.on{background:var(--ok);border-color:var(--ok);color:#fff}
+  .card-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+  .act{
+    border:0;border-radius:11px;padding:9px 6px;font-family:inherit;font-size:13px;font-weight:700;
+    cursor:pointer;transition:.15s;white-space:nowrap
+  }
+  .act:last-child:nth-child(odd){grid-column:1 / -1}
+  .act.say{background:#eff6ff;color:#1d4ed8}
+  .act.say:hover{background:#dbeafe}
+  .act.slow{background:#f5f3ff;color:#6d28d9}
+  .act.slow:hover{background:#ede9fe}
+  .act.spelling{background:#ecfdf5;color:#047857}
+  .act.spelling:hover{background:#d1fae5}
+
+  /* ---------- Panels ---------- */
+  .panel{display:none}
+  .panel.active{display:block}
+  .game-box{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px}
+  .game-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:18px}
+  .scoreboard{display:flex;gap:8px;flex-wrap:wrap}
+  .stat{background:#f1f5f9;border-radius:12px;padding:7px 13px;font-size:14px;font-weight:700;color:#334155}
+  .stat b{color:#2563eb;font-size:17px}
+  .big-play{
+    width:112px;height:112px;border-radius:50%;border:0;cursor:pointer;font-size:46px;
+    background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;box-shadow:0 10px 26px rgba(37,99,235,.4);
+    display:block;margin:0 auto;transition:.16s
+  }
+  .big-play:hover{transform:scale(1.06)}
+  .big-play:active{transform:scale(.97)}
+  .big-play.playing{animation:pulse 1s infinite}
+  @keyframes pulse{0%,100%{box-shadow:0 10px 26px rgba(37,99,235,.4)}50%{box-shadow:0 10px 26px rgba(124,58,237,.75)}}
+  .hint{text-align:center;color:var(--muted);font-size:14px;margin:14px 0 18px}
+  .options{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;max-width:720px;margin:0 auto}
+  .opt{
+    background:#fff;border:3px solid var(--line);border-radius:16px;padding:16px 10px;font-size:21px;
+    font-weight:800;font-family:inherit;color:var(--ink);cursor:pointer;transition:.16s
+  }
+  .opt:hover:not(:disabled){border-color:#93c5fd;background:#f8fbff}
+  .opt.correct{background:#dcfce7;border-color:var(--ok);color:#166534}
+  .opt.wrong{background:#fee2e2;border-color:var(--bad);color:#991b1b}
+  .opt:disabled{cursor:default}
+  .feedback{text-align:center;font-size:17px;font-weight:700;margin-top:16px;min-height:26px}
+  .feedback.ok{color:var(--ok)} .feedback.bad{color:var(--bad)}
+  .center{text-align:center;margin-bottom:16px}
+  .primary{
+    background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;border:0;border-radius:12px;
+    padding:11px 22px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;box-shadow:0 5px 14px rgba(37,99,235,.3)
+  }
+  .primary:hover{filter:brightness(1.07)}
+
+  /* ---------- Matching ---------- */
+  .match-wrap{display:grid;grid-template-columns:1fr 1fr;gap:26px;max-width:660px;margin:0 auto}
+  .match-col h3{text-align:center;font-size:14px;color:var(--muted);margin:0 0 10px;font-weight:700}
+  .pic{
+    width:100%;aspect-ratio:1.45;background:#f8fafc;border:3px solid var(--line);border-radius:16px;
+    font-size:44px;cursor:pointer;display:flex;align-items:center;justify-content:center;margin-bottom:11px;
+    transition:.15s;font-family:inherit
+  }
+  .pic:hover{border-color:#93c5fd;background:#eff6ff}
+  .pic.sel{border-color:#7c3aed;background:#f5f3ff;transform:scale(1.03)}
+  .pic.done{border-color:var(--ok);background:#dcfce7;cursor:default;opacity:.75}
+  .pic.err{animation:shake .35s;border-color:var(--bad)}
+  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+  .wordbtn{
+    width:100%;padding:13px 10px;background:#fff;border:3px solid var(--line);border-radius:13px;
+    font-size:19px;font-weight:800;font-family:inherit;color:var(--ink);cursor:pointer;margin-bottom:11px;transition:.15s
+  }
+  .wordbtn:hover:not(:disabled){border-color:#93c5fd;background:#f8fbff}
+  .wordbtn.done{border-color:var(--ok);background:#dcfce7;color:#166534;cursor:default;opacity:.75}
+  .wordbtn.err{animation:shake .35s;border-color:var(--bad)}
+  .result{
+    text-align:center;font-size:19px;font-weight:800;margin-top:14px;color:var(--ok);min-height:28px
+  }
+  .tips{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:18px 22px;margin-top:22px}
+  .tips h2{font-size:16px;margin:0 0 8px;color:#2563eb}
+  .tips ul{margin:0;padding-left:20px;font-size:14px;line-height:1.85;color:#334155}
+  kbd{background:#f1f5f9;border:1px solid #cbd5e1;border-bottom-width:2px;border-radius:6px;padding:1px 6px;font-size:12px}
+
+  /* ---------- 字母音對照表 ---------- */
+  .lbox{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:20px 22px;margin-top:22px}
+  .lbox h2{font-size:16px;margin:0 0 4px;color:#2563eb}
+  .lbox .sub{font-size:13px;color:var(--muted);margin:0 0 14px}
+  .ltable{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+  .lcell{
+    border:2px solid var(--line);background:#fbfdff;border-radius:14px;padding:10px 10px 8px;
+    transition:.16s;overflow:hidden
+  }
+  .lcell:hover{border-color:#93c5fd;background:#f0f7ff;transform:translateY(-3px)}
+  .lhead{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:6px}
+  .lrec{
+    border:1px solid var(--line);background:#fff;border-radius:8px;width:26px;height:26px;flex:none;
+    cursor:pointer;font-size:13px;line-height:1;display:flex;align-items:center;justify-content:center;transition:.15s
+  }
+  .lrec:hover{background:#fee2e2;border-color:#fca5a5}
+  .lrec.on{background:#dcfce7;border-color:var(--ok)}
+  .lrec.recording{background:#dc2626;border-color:#dc2626;animation:recdot 1s infinite}
+  .lrow.snd .ipa{background:#f5f3ff;color:#6d28d9}
+  .lrow.snd .wd{color:#6d28d9;font-size:13px}
+  .lcell .big{font-size:26px;font-weight:800;line-height:1.1}
+  .lcell .emo{font-size:22px}
+  .lrow{
+    display:flex;align-items:center;gap:8px;width:100%;text-align:left;border:0;background:transparent;
+    font-family:inherit;cursor:pointer;padding:5px 6px;border-radius:9px;transition:.14s
+  }
+  .lrow:hover{background:#e6f0ff}
+  .lrow .ipa{
+    font-size:13px;font-family:Consolas,monospace;color:#475569;background:#eef2f7;
+    padding:2px 7px;border-radius:7px;min-width:54px;text-align:center;flex:none
+  }
+  .lrow .wd{font-size:14px;font-weight:700;color:#1d4ed8;line-height:1.35}
+  .lrow.main{background:#eff6ff;margin-bottom:2px}
+  .lrow.main:hover{background:#dbeafe}
+  .lrow.main .ipa{background:#2563eb;color:#fff}
+  .lrow.main .wd{color:#1e3a8a;font-size:15px}
+  .lrow .silent{font-size:11px;color:#b91c1c;background:#fee2e2;padding:2px 6px;border-radius:6px;flex:none}
+  .lsep{height:1px;background:var(--line);margin:6px 0 4px}
+  .lmore{font-size:11px;color:#94a3b8;margin:4px 0 2px 2px;letter-spacing:.5px}
+  .lcell.focus-a{border-color:var(--a);background:#fffbeb}
+  .lcell.focus-b{border-color:var(--b);background:#fef2f2}
+  .lcell.focus-c{border-color:var(--c);background:#eff6ff}
+  .lcell.playing{border-color:#7c3aed;background:#f5f3ff;box-shadow:0 0 0 3px rgba(124,58,237,.15)}
+  .lrow.playing{background:#ede9fe}
+
+  @media(max-width:560px){
+    .match-wrap{gap:14px}
+    .pic{font-size:34px}
+    .wordbtn{font-size:16px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <h1>🚗 A~C 自然發音 × 交通工具</h1>
+    <p>
+      <span class="badge">Aa /æ/</span>
+      <span class="badge">Bb /b/</span>
+      <span class="badge">Cc /k/</span>
+      點擊任何地方就能聽發音，還有兩個小遊戲可以練
+    </p>
+    <div class="settings">
+      <label for="voiceSel">🔊 發音音色</label>
+      <select id="voiceSel"><option value="">載入中…</option></select>
+      <label for="rateSel">⏱ 速度</label>
+      <select id="rateSel">
+        <option value="0.4">🐢 很慢 (0.4×)</option>
+        <option value="0.55">🐢 慢 (0.55×)</option>
+        <option value="0.75">🐇 稍慢 (0.75×)</option>
+        <option value="1" selected>🚶 正常 (1.0×)</option>
+        <option value="1.15">🐆 快 (1.15×)</option>
+      </select>
+      <label for="accentSel">🌏 口音</label>
+      <select id="accentSel">
+        <option value="en-US">🇺🇸 美式 English (US)</option>
+        <option value="en-GB">🇬🇧 英式 English (UK)</option>
+      </select>
+      <button class="hbtn" id="btnTest" title="播放一句測試音">🔈 試聽</button>
+      <button class="hbtn stop" id="btnStop" title="立刻停止所有朗讀">⏹ 停止</button>
+      <label class="recToggle" id="recToggleWrap" style="display:none">
+        <input type="checkbox" id="recToggle" checked> 🎧 優先用錄音
+      </label>
+      <button class="hbtn" id="btnClearRec" style="display:none" title="刪除所有錄音">🗑 清除錄音</button>
+      <span class="vstatus warn" id="vStatus">⏳ 語音載入中…</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div id="notice" class="notice"></div>
+  <div class="toast" id="toast"></div>
+
+  <nav class="tabs">
+    <button class="active" data-tab="cards">📇 單字卡</button>
+    <button data-tab="quiz">🎧 聽音選字</button>
+    <button data-tab="match">🖼 看圖配字</button>
+  </nav>
+
+  <!-- ================= 單字卡 ================= -->
+  <section id="panel-cards" class="panel active">
+    <div class="filters">
+      <button class="chip active" data-g="ALL">全部</button>
+      <button class="chip" data-g="A">Aa /æ/</button>
+      <button class="chip" data-g="B">Bb /b/</button>
+      <button class="chip" data-g="C">Cc /k/</button>
+      <span class="spacer"></span>
+      <span class="mini-btn" style="cursor:default;display:inline-flex;align-items:center;gap:6px">
+        🔤 逐音第②步用
+        <select id="soundMode" style="border:1px solid #cbd5e1;border-radius:8px;padding:4px 8px;font-size:13px;font-family:inherit">
+          <option value="ipa">音標（æ）</option>
+          <option value="word">示範字（apple）</option>
+        </select>
+      </span>
+      <button class="mini-btn" id="btnReadAll">▶ 逐字朗讀本組</button>
+      <button class="mini-btn" id="btnReadSmooth">🔊 連續朗讀（最順）</button>
+      <button class="mini-btn" id="btnReadBoth">🇨🇳 中英對照朗讀</button>
+      <button class="mini-btn" id="btnReadRandom">🎲 隨機抽讀</button>
+    </div>
+    <div class="grid" id="cardGrid"></div>
+
+    <div class="lbox">
+      <h2>📖 字母音對照表（字母名 vs 字母音）</h2>
+      <p class="sub">
+        <b>字母名</b>＝那個字母本身怎麼唸（字母表上寫的那個）：A→/eɪ/、B→/biː/、C→/siː/。<br>
+        <b>字母音</b>＝這個字母在單字裡發什麼音：<b>C 雖然是 /k/，但拼讀時要念「cuh／可阿」</b>，不是「see／西」也不是「kay／ㄎㄟ」。
+        下表第一列＝字母名→示範字，🔈 那列＝只念字母音。
+        每格另有 🎙 可錄下正確的音。黃框 <span style="color:#f59e0b;font-weight:700">Aa</span> /
+        <span style="color:#ef4444;font-weight:700">Bb</span> /
+        <span style="color:#2563eb;font-weight:700">Cc</span> 是本課重點。
+      </p>
+      <div class="ltable" id="letterTable"></div>
+    </div>
+
+    <div class="tips">
+      <h2>💡 老師使用說明</h2>
+      <ul>
+        <li><b>點卡片</b> = 唸出單字；<b>🐢 慢速</b> = 0.6× 慢速發音，方便學生跟讀。</li>
+        <li><b>🔤 逐音</b> = 自然發音三步驟：<br>
+            ① 念<b>開頭字母的名稱</b>（A）→ ② 念<b>這個字母的音</b>（æ）→
+            ③ <b>慢速念整個單字</b>再正常念一次（拆 → 合）。卡片上會逐字高亮。<br>
+            第②步可用上方下拉切換「<b>音標</b>」或「<b>示範字</b>」；
+            若在下方字母音對照表用 🎙 錄過那個音，會<b>優先播放你錄的音</b>。</li>
+        <li>每張卡上的 <b>首音</b> 標籤是<b>這個單字實際開頭的音</b>，不是照字母猜的。
+            例：<b>airbag</b> 標紅 <b>/eə/</b>，因為它的 a 讀 air 的音，不是 /æ/。
+            「逐音」第②步也會跟著唸正確的那個音。</li>
+        <li>字母音對照表每格有 <b>🔈 只念音</b>（只唸那個音）與 <b>🎙</b>（錄下那個音）兩個按鈕，
+            錄一次後，逐音和只念音都會用你的聲音。</li>
+        <li><b>🐢 慢速</b> = 0.45× 超慢速（已錄音的單字也會一起變慢），適合學生一個音一個音跟著唸。</li>
+        <li><b>🎙 錄音</b> = 老師可用麥克風錄下每個單字的正確發音（存在本機瀏覽器），
+            之後<b>優先播放老師的真人聲音</b>，比電腦語音自然很多。不想用可在右上角取消勾選。</li>
+        <li>若<b>完全沒聲音</b>：先按右上 <b>🔈 試聽</b>，再看 <b>🔊 狀態</b> 顯示什麼。
+            「找不到英文語音」代表瀏覽器沒有語音引擎，請改用 Chrome/Edge 並安裝
+            English (US) 語音套件；或直接用上面的 <b>🎙 錄音</b> 錄製教學音檔。</li>
+        <li><b>📖 字母音對照表</b> = 每個字母的所有念法（像國語多音字），點任一列會唸「字母名 → 示範字」；
+            <b>🔈 只念音</b> = 只唸那個字母音（cuh／可阿），不是字母名（see／西）。</li>
+        <li>右上 <b>✅</b> 可標記「已學會」，進度會存在瀏覽器裡，下次開啟還在。</li>
+        <li>建議流程：先讀 <span class="badge">Aa</span> 組 → 用「逐音」拆解 → 玩「聽音選字」→ 再玩「看圖配字」複習。</li>
+        <li>若沒有聲音，請確認沒有安裝語音套件（Windows 設定 → 語言/語音 → 新增 English (United States) 語音包）。</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= 聽音選字 ================= -->
+  <section id="panel-quiz" class="panel">
+    <div class="game-box">
+      <div class="game-head">
+        <div class="scoreboard">
+          <div class="stat">第 <b id="qRound">1</b> / 10 題</div>
+          <div class="stat">得分 <b id="qScore">0</b></div>
+          <div class="stat">連勝 <b id="qStreak">0</b></div>
+          <div class="stat">🏆 最佳 <b id="qBest">0</b></div>
+        </div>
+        <button class="mini-btn" id="qRestart">🔄 重新開始</button>
+      </div>
+      <div class="center">
+        <button class="big-play" id="qPlay">🔊</button>
+      </div>
+      <p class="hint" id="qHint">按上面的喇叭聽發音，再選出正確的單字（也可以直接按 1 ~ 4 鍵作答）</p>
+      <div class="options" id="qOptions"></div>
+      <div class="feedback" id="qFeedback"></div>
+      <div class="center" style="margin-top:18px">
+        <button class="primary" id="qNext" style="display:none">下一題 →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 看圖配字 ================= -->
+  <section id="panel-match" class="panel">
+    <div class="game-box">
+      <div class="game-head">
+        <div class="scoreboard">
+          <div class="stat">配對 <b id="mDone">0</b> / <b id="mTotal">6</b></div>
+          <div class="stat">步數 <b id="mMoves">0</b></div>
+          <div class="stat">🏆 最佳 <b id="mBest">–</b> 步</div>
+        </div>
+        <button class="mini-btn" id="mRestart">🔄 重新開始</button>
+      </div>
+      <p class="hint">先點左邊的圖片，再點右邊對應的英文單字就配成一對 ✅　（點單字可聽發音）</p>
+      <div class="match-wrap">
+        <div class="match-col"><h3>🖼 看圖</h3><div id="mPics"></div></div>
+        <div class="match-col"><h3>🔤 對字</h3><div id="mWords"></div></div>
+      </div>
+      <div class="result" id="mResult"></div>
+    </div>
+  </section>
+</div>
+
+<script>
+/* ============================================================
+   1. 字庫：A~C 自然發音 + 交通工具
+   ============================================================ */
+const WORDS = [
+  /* ---------- A a ---------- */
+  {w:'ambulance', ipa:'/ˈæmbjələns/', zh:'救護車', emoji:'🚑', g:'A', s:'/æ/', snd:'æ', sndDemo:'apple',
+   sent:'The ambulance is very fast.', sentZh:'救護車跑得很快。'},
+  {w:'accident',  ipa:'/ˈæksɪdənt/', zh:'車禍', emoji:'💥', g:'A', s:'/æ/', snd:'æ', sndDemo:'apple',
+   sent:'There was a car accident on the road.', sentZh:'路上發生了一場車禍。'},
+  {w:'airbag',    ipa:'/ˈeəbæɡ/', zh:'安全氣囊', emoji:'🛡️', g:'A', s:'/æ/', snd:'eə', sndDemo:'air',
+   note:'這裡的 a 讀 /eə/（air 的音），不是 /æ/',
+   sent:'The airbag saved the driver.', sentZh:'安全氣囊救了那位駕駛。'},
+  {w:'axle',      ipa:'/ˈæksəl/', zh:'車軸', emoji:'⚙️', g:'A', s:'/æ/', snd:'æ', sndDemo:'apple',
+   sent:'The front axle is broken.', sentZh:'前車軸壞掉了。'},
+  {w:'amber',     ipa:'/ˈæmbə/', zh:'（交通號誌）黃燈', emoji:'🟠', g:'A', s:'/æ/', snd:'æ', sndDemo:'apple',
+   sent:'The traffic light turned amber.', sentZh:'交通號誌變成黃燈了。'},
+
+  /* ---------- B b ---------- */
+  {w:'bus',       ipa:'/bʌs/', zh:'巴士', emoji:'🚌', g:'B', s:'/b/', snd:'b', sndDemo:'bus',
+   sent:'I take the bus to school every morning.', sentZh:'我每天早上搭巴士上學。'},
+  {w:'bicycle',   ipa:'/ˈbaɪsɪkl/', zh:'腳踏車', emoji:'🚲', g:'B', s:'/b/', snd:'b', sndDemo:'bus',
+   sent:'He rides a bicycle to the park.', sentZh:'他騎腳踏車去公園。'},
+  {w:'bike',      ipa:'/baɪk/', zh:'單車', emoji:'🚴', g:'B', s:'/b/', snd:'b', sndDemo:'bus',
+   sent:'My bike is red and blue.', sentZh:'我的單車是紅色和藍色的。'},
+  {w:'boat',      ipa:'/bəʊt/', zh:'小船', emoji:'⛵', g:'B', s:'/b/', snd:'b', sndDemo:'bus',
+   sent:'The little boat is on the lake.', sentZh:'小船在湖上。'},
+  {w:'balloon',   ipa:'/bəˈluːn/', zh:'熱氣球', emoji:'🎈', g:'B', s:'/b/', snd:'b', sndDemo:'bus',
+   sent:'A hot air balloon floated in the sky.', sentZh:'熱氣球飄在天空中。'},
+  {w:'bobsled',   ipa:'/ˈbɒbsled/', zh:'雪橇', emoji:'🛷', g:'B', s:'/b/', snd:'b', sndDemo:'bus',
+   sent:'We ride a bobsled down the icy hill.', sentZh:'我們坐雪橇滑下冰山。'},
+  {w:'belt',      ipa:'/belt/', zh:'安全帶', emoji:'🪢', g:'B', s:'/b/', snd:'b', sndDemo:'bus',
+   sent:'Buckle your seat belt!', sentZh:'繫好你的安全帶！'},
+  {w:'battery',   ipa:'/ˈbætri/', zh:'電池', emoji:'🔋', g:'B', s:'/b/', snd:'b', sndDemo:'bus',
+   sent:'The car battery is dead.', sentZh:'汽車的電池沒電了。'},
+  {w:'bag',       ipa:'/bæɡ/', zh:'行李袋', emoji:'👜', g:'B', s:'/b/', snd:'b', sndDemo:'bus',
+   sent:'Put your bag under the seat.', sentZh:'把你的袋子放在座位下面。'},
+
+  /* ---------- C c ---------- */
+  {w:'car',       ipa:'/kɑː/', zh:'汽車', emoji:'🚗', g:'C', s:'/k/', snd:'k', sndDemo:'car',
+   sent:'My dad drives a blue car.', sentZh:'我爸爸開一台藍色的車。'},
+  {w:'coach',     ipa:'/kəʊtʃ/', zh:'遊覽車', emoji:'🚍', g:'C', s:'/k/', snd:'k', sndDemo:'car',
+   sent:'We rode the coach to Taipei.', sentZh:'我們搭遊覽車到台北。'},
+  {w:'canoe',     ipa:'/kəˈnuː/', zh:'獨木舟', emoji:'🛶', g:'C', s:'/k/', snd:'k', sndDemo:'car',
+   sent:'He paddled a canoe on the river.', sentZh:'他在河上划獨木舟。'},
+  {w:'cart',      ipa:'/kɑːt/', zh:'手推車', emoji:'🛒', g:'C', s:'/k/', snd:'k', sndDemo:'car',
+   sent:'He pushed a shopping cart.', sentZh:'他推著購物車。'},
+  {w:'cabin',     ipa:'/ˈkæbɪn/', zh:'（飛機）客艙', emoji:'✈️', g:'C', s:'/k/', snd:'k', sndDemo:'car',
+   sent:'The plane has a small cabin.', sentZh:'這架飛機有一間小客艙。'},
+  {w:'cargo',     ipa:'/ˈkɑːɡəʊ/', zh:'貨物', emoji:'📦', g:'C', s:'/k/', snd:'k', sndDemo:'car',
+   sent:'The plane carried cargo to the island.', sentZh:'飛機把貨物運到島上。'},
+  {w:'caravan',   ipa:'/ˈkærəvæn/', zh:'拖掛車', emoji:'🏕️', g:'C', s:'/k/', snd:'k', sndDemo:'car',
+   sent:'They sleep in a caravan by the beach.', sentZh:'他們睡在海邊的拖掛車裡。'},
+  {w:'camper',    ipa:'/ˈkæmpə/', zh:'露營車', emoji:'🚐', g:'C', s:'/k/', snd:'k', sndDemo:'car',
+   sent:'We rent a camper for the trip.', sentZh:'我們租了一輛露營車去旅行。'},
+  {w:'cockpit',   ipa:'/ˈkɒkkɪt/', zh:'（飛機）駕駛艙', emoji:'🛩️', g:'C', s:'/k/', snd:'k', sndDemo:'car',
+   sent:'The pilots sit in the cockpit.', sentZh:'飛行員坐在駕駛艙裡。'},
+  {w:'carriage',  ipa:'/ˈkærɪdʒ/', zh:'馬車', emoji:'🐴', g:'C', s:'/k/', snd:'k', sndDemo:'car',
+   sent:'The old carriage has four white horses.', sentZh:'那輛古老的馬車有四匹白馬。'}
+];
+
+const GROUP_COLOR = {A:'#f59e0b', B:'#ef4444', C:'#2563eb'};
+const GROUP_NAME  = {A:'Aa /æ/', B:'Bb /b/', C:'Cc /k/'};
+
+/* ============================================================
+   1b. 字母音示範字典
+   name = 字母名（唸出用）；alt = 這個字母的其他念法
+   silent = true 表示這顆字母在該詞中不發音
+   ============================================================ */
+const LETTER_DEMO = {
+  a:{name:'A', ipa:'/æ/', sound:'æ', word:'apple', emoji:'🍎', focus:'A', alt:[
+      {ipa:'/eɪ/', word:'cake', emoji:'🎂', words:['cake','rain','day']},
+      {ipa:'/ɑː/', word:'car', emoji:'🚗', words:['car','park']},
+      {ipa:'/ə/',  word:'about', emoji:'👋', words:['about','sofa']}
+  ]},
+  b:{name:'B', ipa:'/b/', word:'bus', emoji:'🚌', focus:'B', alt:[
+      {silent:true, word:'climb', emoji:'🧗', words:['climb','comb']}
+  ]},
+  c:{name:'C', ipa:'/k/', word:'car', emoji:'🚗', focus:'C', alt:[
+      {ipa:'/s/', word:'city', emoji:'🏙️', words:['city','ice','cent']}
+  ]},
+  d:{name:'D', ipa:'/d/', word:'duck', emoji:'🦆', alt:[
+      {silent:true, word:'Wednesday', emoji:'📅', words:['Wednesday']}
+  ]},
+  e:{name:'E', ipa:'/e/', word:'egg', emoji:'🥚', alt:[
+      {ipa:'/eɪ/', word:'eight', emoji:'8️⃣', words:['eight','they','cake']},
+      {ipa:'/iː/', word:'green', emoji:'🐑', words:['green','sheep','eat']},
+      {silent:true, word:'bike', emoji:'🚲', words:['bike','cake','name'], note:'魔法 e'}
+  ]},
+  f:{name:'F', ipa:'/f/', word:'fish', emoji:'🐟', alt:[
+      {silent:true, word:'leaf', emoji:'🍃', words:['leaf','of','safe']}
+  ]},
+  g:{name:'G', ipa:'/g/', word:'goat', emoji:'🐐', alt:[
+      {ipa:'/dʒ/', word:'gem', emoji:'💎', words:['gem','giant','orange']},
+      {silent:true, word:'night', emoji:'🌙', words:['night','sign']}
+  ]},
+  h:{name:'H', ipa:'/h/', word:'hat', emoji:'🎩', alt:[
+      {silent:true, word:'hour', emoji:'⏰', words:['hour','honest']}
+  ]},
+  i:{name:'I', ipa:'/ɪ/', word:'igloo', emoji:'🧊', alt:[
+      {ipa:'/aɪ/', word:'bike', emoji:'🚲', words:['bike','kite','ice']},
+      {ipa:'/iː/', word:'sheep', emoji:'🐑', words:['sheep','green','eat']}
+  ]},
+  j:{name:'J', ipa:'/dʒ/', word:'jam', emoji:'🍯', alt:[]},
+  k:{name:'K', ipa:'/k/', word:'key', emoji:'🔑', alt:[
+      {silent:true, word:'know', emoji:'🧠', words:['know','knife']}
+  ]},
+  l:{name:'L', ipa:'/l/', word:'lion', emoji:'🦁', alt:[
+      {silent:true, word:'talk', emoji:'💬', words:['talk','calf']}
+  ]},
+  m:{name:'M', ipa:'/m/', word:'moon', emoji:'🌙', alt:[]},
+  n:{name:'N', ipa:'/n/', word:'nose', emoji:'👃', alt:[
+      {silent:true, word:'know', emoji:'🧠', words:['know','knife']}
+  ]},
+  o:{name:'O', ipa:'/ɒ/', word:'orange', emoji:'🍊', alt:[
+      {ipa:'/əʊ/', word:'nose', emoji:'👃', words:['nose','boat','home']},
+      {ipa:'/ɔː/', word:'ball', emoji:'⚽', words:['ball','four','door']},
+      {ipa:'/ʌ/',  word:'money', emoji:'💰', words:['money','son','month']},
+      {ipa:'/ɜː/', word:'work', emoji:'🛠️', words:['work','nurse','bird']}
+  ]},
+  p:{name:'P', ipa:'/p/', word:'pig', emoji:'🐷', alt:[
+      {silent:true, word:'pneumonia', emoji:'🤒', words:['pneumonia']}
+  ]},
+  q:{name:'Q', ipa:'/kw/', word:'queen', emoji:'👑', alt:[]},
+  r:{name:'R', ipa:'/r/', word:'robot', emoji:'🤖', alt:[
+      {ipa:'/ɜː/', word:'bird', emoji:'🐦', words:['bird','nurse','girl']},
+      {ipa:'/ər/', word:'butter', emoji:'🧈', words:['butter','teacher']}
+  ]},
+  s:{name:'S', ipa:'/s/', word:'sun', emoji:'☀️', alt:[
+      {ipa:'/z/',  word:'zoo', emoji:'🦓', words:['zoo','nose']},
+      {ipa:'/ʃ/',  word:'sugar', emoji:'🍬', words:['sugar','machine']},
+      {ipa:'/ʒ/',  word:'television', emoji:'📺', words:['television','usually']},
+      {silent:true, word:'island', emoji:'🏝️', words:['island','listen']}
+  ]},
+  t:{name:'T', ipa:'/t/', word:'tiger', emoji:'🐯', alt:[
+      {ipa:'/tʃ/', word:'teacher', emoji:'👩‍🏫', words:['teacher','watch','lunch']},
+      {silent:true, word:'castle', emoji:'🏰', words:['castle','listen']}
+  ]},
+  u:{name:'U', ipa:'/ʌ/', word:'umbrella', emoji:'☂️', alt:[
+      {ipa:'/juː/', word:'music', emoji:'🎵', words:['music','student']},
+      {ipa:'/uː/', word:'blue', emoji:'🔵', words:['blue','food']},
+      {ipa:'/ʊ/',  word:'book', emoji:'📖', words:['book','good']}
+  ]},
+  v:{name:'V', ipa:'/v/', word:'van', emoji:'🚐', alt:[]},
+  w:{name:'W', ipa:'/w/', word:'whale', emoji:'🐳', alt:[
+      {silent:true, word:'write', emoji:'✍️', words:['write','answer','sword']}
+  ]},
+  x:{name:'X', ipa:'/ks/', word:'box', emoji:'📦', alt:[
+      {ipa:'/ɡz/', word:'exam', emoji:'📝', words:['exam','exist','exact']}
+  ]},
+  y:{name:'Y', ipa:'/j/', word:'yellow', emoji:'🟡', alt:[
+      {ipa:'/aɪ/', word:'sky', emoji:'🌤️', words:['sky','my','day']},
+      {ipa:'/ɪ/',  word:'happy', emoji:'😊', words:['happy','city']}
+  ]},
+  z:{name:'Z', ipa:'/z/', word:'zebra', emoji:'🦓', alt:[]}
+};
+
+/* ============================================================
+   1d. 字母「音」對照（字母音，不是字母名！）
+   t  = 拼讀時要念的「音」（餵給語音引擎的文字）
+   zh = 中文標音（可阿＝kuh、台阿＝tuh…）
+   母音直接用 IPA 字元（æ ɪ ɒ ʌ ɛ ə），引擎能直接念出來；
+   輔音用「音＋阿」＝ consonant+schwa 的拼法（cuh buh tuh…），
+   因為單獨餵一個字母，引擎只會念成字母名（k→kay、b→bee），那就教錯了。
+   ============================================================ */
+const LETTER_SOUND = {
+  a:{t:'æ',    zh:'艾'},   b:{t:'buh',  zh:'波阿'}, c:{t:'kuh',  zh:'可阿'},
+  d:{t:'duh',  zh:'德阿'}, e:{t:'ɛ',    zh:'埃'},   f:{t:'fuh',  zh:'夫阿'},
+  g:{t:'guh',  zh:'哥阿'}, h:{t:'huh',  zh:'喝阿'}, i:{t:'ɪ',    zh:'衣'},
+  j:{t:'juh',  zh:'只阿'}, k:{t:'kuh',  zh:'可阿'}, l:{t:'luh',  zh:'歐阿'},
+  m:{t:'muh',  zh:'姆阿'}, n:{t:'nuh',  zh:'恩阿'}, o:{t:'ɒ',    zh:'阿'},
+  p:{t:'puh',  zh:'普阿'}, q:{t:'kwuh', zh:'丘阿'}, r:{t:'ruh',  zh:'阿兒'},
+  s:{t:'suh',  zh:'斯阿'}, t:{t:'tuh',  zh:'特阿'}, u:{t:'ʌ',    zh:'阿'},
+  v:{t:'vuh',  zh:'夫阿'}, w:{t:'wuh',  zh:'烏阿'}, x:{t:'ks',   zh:'克斯'},
+  y:{t:'yuh',  zh:'耶阿'}, z:{t:'zuh',  zh:'茲阿'}
+};
+
+/* 單字首音 → 拼讀時該念的文字（字母音，不是字母名） */
+const SOUND_TOKEN = {
+  'æ':'æ', 'eə':'air', 'ɛ':'ɛ', 'ɪ':'ɪ', 'ɒ':'ɒ', 'ʌ':'ʌ', 'ə':'ə',
+  'b':'buh', 'd':'duh', 'k':'kuh', 'p':'puh', 't':'tuh', 'g':'guh', 'f':'fuh',
+  'v':'vuh', 'h':'huh', 'j':'juh', 'm':'muh', 'n':'nuh', 'l':'luh', 's':'suh',
+  'z':'zuh', 'r':'ruh', 'w':'wuh', 'y':'yuh', 'ks':'ks', 'ʃ':'shuh', 'tʃ':'chuh',
+  'dʒ':'juh', 'ŋ':'nguh', 'θ':'thuh', 'ð':'thuh'
+};
+
+/* 首音的中文標音（字母音，不是字母名） */
+const SOUND_ZH = {
+  'æ':'艾','eə':'ㄟ','ɛ':'埃','ɪ':'衣','ɒ':'阿','ʌ':'阿','ə':'阿',
+  'b':'波阿','d':'德阿','k':'可阿','p':'普阿','t':'特阿','g':'哥阿','f':'夫阿','v':'夫阿',
+  'h':'喝阿','j':'只阿','m':'姆阿','n':'恩阿','l':'歐阿','s':'斯阿','z':'茲阿','r':'阿兒',
+  'w':'烏阿','y':'耶阿','ks':'克斯','ʃ':'西阿','tʃ':'取阿','dʒ':'只阿','ŋ':'嗯阿','θ':'斯'
+};
+
+
+/* ============================================================
+   2. 語音引擎：佇列式播放 (Web Speech API)
+   重點：不用「每次 cancel() 再 speak()」——那會讓 Chrome 丟字/卡頓。
+   改成把句子排進佇列，用 onend 串接，聽起來才會連續清楚。
+   ============================================================ */
+const synth = window.speechSynthesis;
+const $ = id => document.getElementById(id);
+let voices = [], voiceURI = localStorage.getItem('abcT.voice') || '';
+
+/* --- 語音佇列 --- */
+const SP = { queue:[], busy:false, audible:false, gap:140, onState:null, onDone:null };
+let voiceReady = false;
+let currentAudio = null;
+
+/* 估算一句話大約要講多久（毫秒） */
+function estimateMs(text, rate){
+  const r = rate || 1;
+  const s = String(text);
+  const words = s.trim().split(/\s+/).filter(Boolean).length || 1;
+  return Math.max(600, (s.length / 11) * 1000 / r + words * 120);
+}
+
+/* 引擎暖機：Chrome 第一次發聲常會吃掉開頭，預先餵一個無聲句子 */
+let engineWarmed = false;
+function warmUpEngine(){
+  if(engineWarmed || !synth) return;
+  engineWarmed = true;
+  try{
+    const u = new SpeechSynthesisUtterance('a');
+    u.volume = 0; u.rate = 10; u.pitch = 0;
+    synth.speak(u);
+  }catch(e){}
+}
+document.addEventListener('pointerdown', warmUpEngine, {once:true});
+
+function spStop(){
+  const wasAudible = SP.audible;
+  SP.queue.length = 0;
+  SP.busy = false;
+  SP.audible = false;
+  // 只有真的有聲音在播才 cancel；空閒時 cancel 會讓下一句的頭音被吃掉
+  if(synth && wasAudible){ try{ synth.cancel(); }catch(e){} }
+  if(currentAudio){ try{ currentAudio.pause(); }catch(e){} currentAudio = null; }
+  if(SP.onState) SP.onState(false);
+}
+function spPlay(items, gap, onDone){
+  const interrupted = SP.audible;
+  SP.queue.length = 0;
+  SP.busy = false;
+  if(interrupted && synth){ try{ synth.cancel(); }catch(e){} }
+  SP.audible = false;
+  if(currentAudio){ try{ currentAudio.pause(); }catch(e){} currentAudio = null; }
+  SP.gap = (gap==null) ? 140 : gap;
+  SP.queue = items.map(i => (typeof i==='string') ? {text:i, rate:currentRate()} : i);
+  SP.onDone = onDone || null;
+  if(SP.onState) SP.onState(false);
+  // 剛剛才打斷過語音 → 等引擎恢復再講，避免開頭被截掉
+  if(interrupted) setTimeout(spPump, 110);
+  else spPump();
+}
+function spPump(){
+  if(SP.busy || !SP.queue.length) return;
+  if(!synth){
+    showNotice('這個瀏覽器不支援語音合成，請改用 Chrome / Edge 開啟。');
+    SP.queue.length = 0; if(SP.onState) SP.onState(false); return;
+  }
+  const item = SP.queue.shift();
+  if(!item){ return; }
+  if(synth.paused) synth.resume();
+  if(item.mark) { try{ item.mark(); }catch(e){} }
+
+  SP.busy = true;
+  SP.audible = true;
+  if(SP.onState) SP.onState(true);
+
+  let fired = false, watchdog = null;
+  const est = estimateMs(item.text, item.rate || currentRate());
+  const done = ()=>{
+    if(fired) return; fired = true;
+    if(watchdog) clearTimeout(watchdog);
+    SP.busy = false;
+    SP.audible = false;
+    if(!SP.queue.length){
+      if(SP.onState) SP.onState(false);
+      if(SP.onDone){ const f=SP.onDone; SP.onDone=null; try{ f(); }catch(e){} }
+      return;
+    }
+    setTimeout(spPump, SP.gap);
+  };
+  // 看門狗：某些瀏覽器 onend 不觸發，會讓整個佇列卡死；逾時就強制往下
+  watchdog = setTimeout(()=>{ if(!fired) done(); }, Math.max(2500, est * 2.2 + 600));
+
+  // 老師真人錄音優先（發音最自然）
+  if(recUse && !item.voiceZh && item.soundKey && recSounds[item.soundKey]){
+    if(playRecording('sound:'+item.soundKey, done, item.rate || currentRate())) return;
+  }
+  if(recUse && !item.voiceZh && recs[item.text]){
+    if(playRecording(item.text, done, item.rate || currentRate())) return;
+  }
+
+  const u = new SpeechSynthesisUtterance(item.text);
+  const v = item.voiceZh ? pickVoiceZh() : pickVoice();
+  if(v) u.voice = v;
+  else u.lang = item.voiceZh ? 'zh-TW' : $('accentSel').value;
+  u.rate = item.rate || currentRate();
+  u.pitch = item.pitch || 1;
+  u.volume = (item.volume==null) ? 1 : item.volume;
+
+  u.onend = done; u.onerror = done;
+  try{ synth.speak(u); }catch(e){ done(); }
+}
+
+/* Chrome 已知 bug：朗讀超過 ~15 秒會自動暫停，用 ping 保持清醒 */
+setInterval(()=>{ if(synth && SP.busy && synth.paused) synth.resume(); }, 2500);
+
+let voiceCheckTimer = null;
+function loadVoices(){
+  voices = synth ? synth.getVoices() : [];
+  const sel = $('voiceSel');
+  const en = voices.filter(v => /^en/i.test(v.lang));
+  const list = en.length ? en : voices;
+  sel.innerHTML = '';
+  if(!list.length){
+    // 語音清單常在數秒後才載入，先等一下再判定為「真的沒有」
+    sel.innerHTML = '<option value="">載入中…</option>';
+    setVoiceStatus('warn','⏳ 語音載入中…');
+    clearTimeout(voiceCheckTimer);
+    voiceCheckTimer = setTimeout(()=>{
+      if(!voices.length){
+        sel.innerHTML = '<option value="">（找不到語音）</option>';
+        setVoiceStatus('bad','⚠️ 找不到英文語音');
+        showNotice(
+          '<b>這個瀏覽器目前無法發音。</b><br>' +
+          '① 請改用 <b>Chrome</b> 或 <b>Edge</b> 開啟（其他瀏覽器常不支援語音）。<br>' +
+          '② Windows：設定 → 時間與語言 → 語音 → 新增 <b>English (United States)</b> 語音套件。' +
+          '（Win11 可直接在設定搜尋「語音」並安裝）<br>' +
+          '③ Mac：系統設定 → 輔助使用 → 旁白 → 系統語音下載 English。<br>' +
+          '④ 仍然沒聲音？可能是喇叭/音量或麥克風權限，請先用「🔈 試聽」確認。'
+        );
+      }
+    }, 2500);
+    return;
+  }
+  clearTimeout(voiceCheckTimer);
+  $('notice').classList.remove('show');
+  voiceReady = true;
+  const auto = document.createElement('option');
+  auto.value = '';
+  auto.textContent = '🎯 自動（依下方口音選擇）';
+  sel.appendChild(auto);
+  list.forEach(v=>{
+    const o = document.createElement('option');
+    o.value = v.voiceURI;
+    o.textContent = `${v.name} (${v.lang})`;
+    sel.appendChild(o);
+  });
+  if(voiceURI && list.some(v=>v.voiceURI===voiceURI)) sel.value = voiceURI;
+  else { sel.value = ''; voiceURI = ''; }
+  setVoiceStatus('ok', `🔊 已就緒：${en.length||list.length} 個語音`);
+}
+if(synth){
+  loadVoices();
+  synth.onvoiceschanged = loadVoices;
+}
+
+function setVoiceStatus(kind, text){
+  const el = $('vStatus');
+  if(!el) return;
+  el.className = 'vstatus ' + kind;
+  el.textContent = text;
+}
+
+function showNotice(msg){ const n=$('notice'); n.innerHTML = msg; n.classList.add('show'); }
+
+function currentRate(){ return parseFloat($('rateSel').value) || 1; }
+function pickVoice(){
+  if(!synth) return null;
+  const v = voices.find(v=>v.voiceURI===voiceURI);
+  if(v) return v;
+  const want = $('accentSel').value;
+  return voices.find(v=>v.lang.replace('_','-').toLowerCase()===want.toLowerCase())
+      || voices.find(v=>/^en/i.test(v.lang)) || null;
+}
+function pickVoiceZh(){
+  if(!synth) return null;
+  return voices.find(v=>/^zh[-_]?TW/i.test(v.lang))
+      || voices.find(v=>/^zh/i.test(v.lang))
+      || null;
+}
+
+/* ============================================================
+   2b. 共用狀態
+   ============================================================ */
+const store = {
+  get(k, d){ try{ return JSON.parse(localStorage.getItem('abcT.'+k)) ?? d; }catch(e){ return d; } },
+  set(k, v){ try{ localStorage.setItem('abcT.'+k, JSON.stringify(v)); return true; }catch(e){ return false; } }
+};
+let state = {
+  filter: 'ALL',
+  learned: new Set(store.get('learned', [])),
+  bestQuiz: store.get('bestQuiz', 0),
+  bestMatch: store.get('bestMatch', null)
+};
+const pool = () => state.filter==='ALL' ? WORDS : WORDS.filter(w=>w.g===state.filter);
+
+/* ============================================================
+   3. 播放動作
+   ============================================================ */
+let drillToken = 0;
+
+/* ---------- 老師真人錄音（備援方案） ---------- */
+let recs = store.get('rec', {});
+let recSounds = store.get('recSound', {});
+let recUse = true;                       // 有錄音時優先用錄音
+let recorder = null, recChunks = [], recWord = null;
+let soundRecorder = null, soundChunks = [], soundRecChar = null;
+
+function recSupported(){
+  return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder);
+}
+function toast(msg){
+  const t = $('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(toast._t);
+  toast._t = setTimeout(()=>t.classList.remove('show'), 2600);
+}
+function blobToDataURL(blob){
+  return new Promise(res=>{
+    const r = new FileReader();
+    r.onload = ()=>res(r.result);
+    r.readAsDataURL(blob);
+  });
+}
+function playRecording(word, onend, rate){
+  const isSound = String(word).startsWith('sound:');
+  const key = isSound ? String(word).slice(6) : word;
+  const url = isSound ? recSounds[key] : recs[key];
+  if(!url){ if(onend) onend(); return false; }
+  try{
+    if(currentAudio){ currentAudio.pause(); currentAudio = null; }
+    const a = new Audio(url);
+    currentAudio = a;
+    // ★ 錄音也要套用速度，否則「慢速」對錄音完全無效
+    a.playbackRate = Math.max(0.25, Math.min(4, rate || currentRate()));
+    a.onended = ()=>{ if(onend) onend(); };
+    a.onerror = ()=>{ if(onend) onend(); };
+    a.play().then(()=>{}).catch(()=>{ if(onend) onend(); });
+    return true;
+  }catch(e){ if(onend) onend(); return false; }
+}
+async function toggleRecord(word, btn){
+  if(recorder && recWord===word){ recorder.stop(); return; }
+  if(recorder){ try{ recorder.stop(); }catch(e){} }
+  try{
+    const stream = await navigator.mediaDevices.getUserMedia({audio:true});
+    recChunks = []; recWord = word;
+    const mime = ['audio/webm;codecs=opus','audio/webm','audio/mp4']
+      .find(m=>window.MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(m));
+    recorder = mime ? new MediaRecorder(stream, {mimeType:mime}) : new MediaRecorder(stream);
+    recorder.ondataavailable = e=>{ if(e.data && e.data.size) recChunks.push(e.data); };
+    recorder.onstop = async ()=>{
+      try{
+        const blob = new Blob(recChunks, {type: (recorder && recorder.mimeType) || 'audio/webm'});
+        recs[word] = await blobToDataURL(blob);
+        if(!store.set('rec', recs)){
+          delete recs[word];
+          toast('❌ 儲存失敗：瀏覽器空間不足，請先清除部分錄音');
+        }else{
+          toast('✅ 已錄音：' + word + '（會優先播放你的聲音）');
+        }
+      }catch(e){ toast('❌ 錄音儲存失敗'); }
+      stream.getTracks().forEach(t=>t.stop());
+      recorder = null; recWord = null;
+      updateRecUI();
+      renderCards();
+    };
+    recorder.start();
+    btn.classList.add('recording');
+    btn.textContent = '⏹ 停止錄音';
+    toast('🎙 錄音中…請清楚念出「' + word + '」，再按一次結束');
+  }catch(e){
+    const n = (e && e.name) ? e.name : String(e);
+    toast('🎙 麥克風無法使用（' + n + '）。若用 file:// 開啟被擋，請改用區域網路伺服器開啟。');
+  }
+}
+function updateRecUI(){
+  const has = Object.keys(recs).length;
+  const supported = recSupported();
+  $('recToggleWrap').style.display = (has || supported) ? 'flex' : 'none';
+  $('recToggle').checked = recUse;
+  $('btnClearRec').style.display = has ? 'inline-block' : 'none';
+  $('btnClearRec').textContent = '🗑 清除錄音 (' + has + ')';
+}
+
+function say(text, rate){
+  drillToken++;
+  spPlay([{text:String(text), rate: rate || currentRate()}]);
+}
+function saySeq(list, gap){
+  drillToken++;
+  spPlay(list.map(i => (typeof i==='string') ? {text:i, rate:currentRate()} : i), gap);
+}
+function stopAll(){ drillToken++; spStop(); }
+
+/* 逐音拆解（自然發音三步驟）：
+   ① 念單字的「開頭字母」名稱，例如 A
+   ② 念這個字母的「音」：老師錄音 → 音標（æ）→ 示範字（apple）
+   ③ 慢速念整個單字（例如 ambulance）→ 再正常念一次（拆 → 合） */
+function spellOut(word, cardEl){
+  const token = ++drillToken;
+  const letters = [...word];
+  const spans = cardEl ? [...cardEl.querySelectorAll('.word .wl')] : [];
+  const btns  = cardEl ? [...cardEl.querySelectorAll('[data-a="spell"]')] : [];
+  btns.forEach(b=>b.classList.add('busy'));
+
+  const hi = (list)=>{
+    spans.forEach(s=>s.classList.remove('hot'));
+    list.forEach(i=>{ if(spans[i]) spans[i].classList.add('hot'); });
+  };
+
+  const first = letters[0].toLowerCase();
+  const d = LETTER_DEMO[first];
+  const item = WORDS.find(x=>x.w===word);
+  // ★ 以「這個單字實際的首音」為準，而不是查字母預設音
+  //   例：airbag 的 a 讀 /eə/，不是字母 a 的預設 /æ/
+  const wordSound = (item && item.snd) ? item.snd : (LETTER_SOUND[first] ? LETTER_SOUND[first].t : d.ipa.replace(/[/\[\]]/g,''));
+  //   拼讀時要念的「音」（cuh／可阿），不是字母名（kay）
+  const wordToken = (item && item.sndText) ? item.sndText
+                   : (SOUND_TOKEN[wordSound] || wordSound);
+  const wordDemo  = (item && item.sndDemo) ? item.sndDemo : d.word;
+  const mode = ($('soundMode') && $('soundMode').value) || 'ipa';
+  const items = [];
+
+  // ① 開頭字母名稱
+  items.push({ text: d.name, rate:1, mark:()=>{ if(token===drillToken) hi([0]); } });
+
+  // ② 這個單字首字母的「音」：老師錄音優先，其次音標/拼讀音，最後示範字
+  const sameAsWord = (mode==='word') && wordDemo === word.toLowerCase();
+  if(!sameAsWord){
+    const soundText = (mode==='word') ? wordDemo : wordToken;
+    items.push({ text:soundText, rate:0.9, soundKey:first, mark:()=>{ if(token===drillToken) hi([0]); } });
+  }
+
+  // ③ 慢速整字 → 正常整字
+  items.push({ text:word, rate:0.5, mark:()=>{ if(token===drillToken) hi(letters.map((_,i)=>i)); } });
+  items.push({ text:word, rate:1,   mark:()=>{ if(token===drillToken) hi([]); } });
+
+  spPlay(items, 280, ()=>{
+    if(token!==drillToken) return;
+    spans.forEach(s=>s.classList.remove('hot'));
+    btns.forEach(b=>b.classList.remove('busy'));
+  });
+}
+
+/* ============================================================
+   4. 單字卡
+   ============================================================ */
+function renderCards(){
+  const grid = $('cardGrid');
+  grid.innerHTML = '';
+  pool().forEach(item=>{
+    const done = state.learned.has(item.w);
+    const card = document.createElement('div');
+    card.className = 'wcard' + (recs[item.w] ? ' hasrec' : '');
+    card.dataset.word = item.w;
+    const letters = [...item.w].map(ch=>`<span class="wl">${ch}</span>`).join('');
+    const isEx = !!item.note;   // 首音和字母預設音不同的例外
+    card.innerHTML = `
+      <span class="tag" style="background:${GROUP_COLOR[item.g]}">${GROUP_NAME[item.g]}</span>
+      <button class="learn ${done?'on':''}" title="標記已學會">✓</button>
+      <span class="emoji">${item.emoji}</span>
+      <div class="word">${letters}</div>
+      <div class="ipa">${item.ipa}</div>
+      <div class="zh">${item.zh}</div>
+      <div class="sndrow">
+        <span class="sndchip ${isEx?'ex':''}">首音 /${item.snd}/${SOUND_ZH[item.snd]?'（'+SOUND_ZH[item.snd]+'）':''}</span>
+        ${isEx?`<span class="sndnote">⚠️ ${item.note}</span>`:''}
+      </div>
+      <div class="sent">${item.sent}<br><b>${item.sentZh}</b></div>
+      <div class="card-actions">
+        <button class="act say" data-a="say">🔊 發音</button>
+        <button class="act slow" data-a="slow">🐢 慢速</button>
+        <button class="act spelling" data-a="spell" title="字母名 → 首音 → 整字">🔤 逐音</button>
+        ${recSupported() ? `<button class="act rec" data-a="rec" title="用麥克風錄下正確發音">🎙 錄音</button>` : ''}
+      </div>`;
+    card.addEventListener('click', e=>{
+      const btn = e.target.closest('[data-a]');
+      if(btn){
+        e.stopPropagation();
+        if(btn.dataset.a==='say')   say(item.w);
+        if(btn.dataset.a==='slow')  say(item.w, 0.45);
+        if(btn.dataset.a==='spell'){ drillToken++; spellOut(item.w, card); }
+        if(btn.dataset.a==='rec'){ toggleRecord(item.w, btn); }
+        return;
+      }
+      if(e.target.classList.contains('learn')){
+        e.stopPropagation();
+        toggleLearn(item.w);
+        return;
+      }
+      say(item.w);
+    });
+    grid.appendChild(card);
+  });
+}
+function toggleLearn(w){
+  drillToken++;
+  if(state.learned.has(w)) state.learned.delete(w); else state.learned.add(w);
+  store.set('learned', [...state.learned]);
+  renderCards();
+}
+$('btnReadAll').addEventListener('click', ()=>{
+  drillToken++;
+  const list = pool();
+  const items = [];
+  list.forEach(it=>items.push({text:it.w, rate:currentRate()}));
+  spPlay(items, 420);
+});
+/* 一次 speak() 唸完整組：引擎不重複初始化 → 完全不會卡頓、也不會切頭尾 */
+$('btnReadSmooth').addEventListener('click', ()=>{
+  drillToken++;
+  const text = pool().map(it=>it.w).join(', ');
+  spPlay([{text:text, rate:currentRate()}], 200);
+});
+$('btnReadBoth').addEventListener('click', ()=>{
+  drillToken++;
+  const list = pool();
+  const items = [];
+  list.forEach(it=>{
+    items.push({text:it.w, rate:currentRate()});
+    items.push({text:it.zh, rate:currentRate(), voiceZh:true});
+  });
+  spPlay(items, 280);
+});
+$('btnReadRandom').addEventListener('click', ()=>{
+  const list = pool();
+  say(list[Math.floor(Math.random()*list.length)].w);
+});
+
+/* ============================================================
+   4b. 字母音對照表
+   ============================================================ */
+function playNameThenWord(name, word, silent){
+  drillToken++;
+  if(silent){ spPlay([{text:word, rate:0.85}]); return; }
+  // 合併成一句：「A, apple」— 少一次引擎初始化，開頭也不會被吃掉
+  spPlay([{text:`${name}, ${word}`, rate:0.9}], 260);
+}
+
+function renderLetterTable(){
+  const box = $('letterTable');
+  box.innerHTML = '';
+  Object.keys(LETTER_DEMO).forEach(ch=>{
+    const d = LETTER_DEMO[ch];
+    const cell = document.createElement('div');
+    cell.className = 'lcell' + (d.focus ? ' focus-'+d.focus.toLowerCase() : '');
+    const hasSoundRec = !!recSounds[ch];
+    const altRows = (d.alt||[]).map(a=>`
+      <button class="lrow" data-word="${a.word}" data-silent="${a.silent?'1':'0'}">
+        <span class="ipa">${a.silent?'🔇':a.ipa}</span>
+        <span class="wd">${a.words.join('、')}${a.note?' <i style="font-style:normal;color:#b45309">('+a.note+')</i>':''}</span>
+      </button>`).join('');
+    cell.innerHTML = `
+      <div class="lhead">
+        <span class="big">${d.name.toUpperCase()}${d.name.toLowerCase()}</span>
+        <span class="emo">${d.emoji}</span>
+        <button class="lrec ${hasSoundRec?'on':''}" data-l="${ch}" title="錄下這個字母的『音」（只念那個音）">${hasSoundRec?'🎧':'🎙'}</button>
+      </div>
+      <button class="lrow main" data-word="${d.word}" data-silent="0">
+        <span class="ipa">${d.ipa}</span><span class="wd">${d.word}</span>
+      </button>
+      <button class="lrow snd" data-sound="1" data-l="${ch}" title="只念這個字母的『音』（不是字母名）">
+        <span class="ipa">🔈</span><span class="wd">只念音：<b>${LETTER_SOUND[ch].t}</b>（${LETTER_SOUND[ch].zh}）</span>
+      </button>
+      ${altRows ? '<div class="lsep"></div><div class="lmore">其他念法</div>' + altRows : ''}`;
+    cell.addEventListener('click', e=>{
+      const rec = e.target.closest('.lrec');
+      if(rec){ e.stopPropagation(); toggleSoundRecord(ch, rec); return; }
+      const snd = e.target.closest('.lrow.snd');
+      if(snd){
+        e.stopPropagation();
+        document.querySelectorAll('.lcell.playing,.lrow.playing').forEach(x=>x.classList.remove('playing'));
+        cell.classList.add('playing'); snd.classList.add('playing');
+        playLetterSound(ch);
+        return;
+      }
+      const row = e.target.closest('.lrow');
+      if(!row) return;
+      document.querySelectorAll('.lcell.playing,.lrow.playing').forEach(x=>x.classList.remove('playing'));
+      cell.classList.add('playing'); row.classList.add('playing');
+      playNameThenWord(d.name, row.dataset.word, row.dataset.silent==='1');
+    });
+    box.appendChild(cell);
+  });
+}
+
+/* 播放「字母的音」：老師錄音 → 拼讀音（cuh／可阿），不是字母名（kay） */
+function playLetterSound(ch){
+  drillToken++;
+  if(recUse && recSounds[ch]){
+    if(playRecording('sound:'+ch, null, 1)) return;
+  }
+  spPlay([{text: LETTER_SOUND[ch] ? LETTER_SOUND[ch].t : LETTER_DEMO[ch].name, rate:0.9}], 200);
+}
+
+/* 錄下「字母的音」 */
+async function toggleSoundRecord(ch, btn){
+  if(soundRecorder && soundRecChar===ch){ soundRecorder.stop(); return; }
+  if(soundRecorder){ try{ soundRecorder.stop(); }catch(e){} }
+  try{
+    const stream = await navigator.mediaDevices.getUserMedia({audio:true});
+    soundChunks = []; soundRecChar = ch;
+    const mime = ['audio/webm;codecs=opus','audio/webm','audio/mp4']
+      .find(m=>window.MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(m));
+    soundRecorder = mime ? new MediaRecorder(stream, {mimeType:mime}) : new MediaRecorder(stream);
+    soundRecorder.ondataavailable = e=>{ if(e.data && e.data.size) soundChunks.push(e.data); };
+    soundRecorder.onstop = async ()=>{
+      try{
+        const blob = new Blob(soundChunks, {type:(soundRecorder && soundRecorder.mimeType)||'audio/webm'});
+        recSounds[ch] = await blobToDataURL(blob);
+        store.set('recSound', recSounds);
+        toast('✅ 已錄下「' + LETTER_DEMO[ch].name.toUpperCase() + LETTER_DEMO[ch].name.toLowerCase() + '」的音');
+      }catch(e){ toast('❌ 錄音儲存失敗'); }
+      stream.getTracks().forEach(t=>t.stop());
+      soundRecorder = null; soundRecChar = null;
+      renderLetterTable();
+    };
+    soundRecorder.start();
+    btn.classList.add('recording');
+    toast('🎙 錄音中…請只念「' + (LETTER_SOUND[ch] ? LETTER_SOUND[ch].t : ch) + '」這一個音');
+  }catch(e){
+    toast('🎙 麥克風無法使用（' + ((e&&e.name)||e) + '）');
+  }
+}
+
+/* 分類 chips */
+document.querySelectorAll('.chip').forEach(c=>{
+  c.addEventListener('click', ()=>{
+    document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));
+    c.classList.add('active');
+    state.filter = c.dataset.g;
+    drillToken++;
+    renderCards();
+    resetQuiz();
+    restartMatch();
+  });
+});
+
+/* ============================================================
+   5. 遊戲一：聽音選字
+   ============================================================ */
+const q = { round:0, total:10, score:0, streak:0, current:null, opts:[], answered:false };
+
+function shuffle(a){ const r=a.slice(); for(let i=r.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [r[i],r[j]]=[r[j],r[i]]; } return r; }
+
+function resetQuiz(){
+  q.round=0; q.score=0; q.streak=0; q.current=null; q.answered=false;
+  $('qRound').textContent=1; $('qScore').textContent=0; $('qStreak').textContent=0;
+  $('qFeedback').textContent=''; $('qNext').style.display='none'; $('qOptions').innerHTML='';
+  $('qHint').textContent='按「重新開始」開始挑戰';
+  $('qPlay').disabled=true; $('qPlay').classList.remove('playing');
+}
+function startQuiz(){
+  q.round=0; q.score=0; q.streak=0;
+  $('qBest').textContent = state.bestQuiz;
+  nextQuestion();
+}
+function nextQuestion(){
+  if(q.round>=q.total){ finishQuiz(); return; }
+  q.round++; q.answered=false;
+  $('qRound').textContent=q.round;
+  $('qScore').textContent=q.score;
+  $('qStreak').textContent=q.streak;
+  $('qFeedback').textContent='';
+  $('qNext').style.display='none';
+  $('qHint').textContent='按上面的喇叭聽發音，再選出正確的單字（也可以直接按 1 ~ 4 鍵作答）';
+
+  const src = pool();
+  q.current = src[Math.floor(Math.random()*src.length)];
+  const others = shuffle(WORDS.filter(w=>w.w!==q.current.w)).slice(0,3);
+  q.opts = shuffle([q.current, ...others]);
+
+  const box = $('qOptions'); box.innerHTML='';
+  q.opts.forEach((o,i)=>{
+    const b = document.createElement('button');
+    b.className='opt'; b.textContent=o.w;
+    b.addEventListener('click', ()=>answer(o.w,b));
+    box.appendChild(b);
+  });
+  $('qPlay').disabled=false;
+  setTimeout(()=>{ say(q.current.w); flashPlay(); }, 300);
+}
+function flashPlay(){ const p=$('qPlay'); p.classList.add('playing'); setTimeout(()=>p.classList.remove('playing'),1200); }
+function answer(word, btn){
+  if(q.answered) return;
+  q.answered=true;
+  const fb = $('qFeedback');
+  document.querySelectorAll('#qOptions .opt').forEach(b=>b.disabled=true);
+  if(word===q.current.w){
+    btn.classList.add('correct');
+    q.score++; q.streak++;
+    fb.textContent = `✅ 正確！${q.current.w} = ${q.current.zh}　${q.current.ipa}`;
+    fb.className='feedback ok';
+  }else{
+    btn.classList.add('wrong');
+    document.querySelectorAll('#qOptions .opt').forEach(b=>{ if(b.textContent===q.current.w) b.classList.add('correct'); });
+    q.streak=0;
+    fb.textContent = `❌ 正確答案是「${q.current.w}」（${q.current.zh}）`;
+    fb.className='feedback bad';
+  }
+  $('qScore').textContent=q.score; $('qStreak').textContent=q.streak;
+  $('qNext').style.display='inline-block';
+  $('qNext').textContent = q.round>=q.total ? '看成績 →' : '下一題 →';
+}
+function finishQuiz(){
+  if(q.score>state.bestQuiz){ state.bestQuiz=q.score; store.set('bestQuiz',q.score); }
+  $('qBest').textContent=state.bestQuiz;
+  const star = q.score>=9?'🏆🏆🏆': q.score>=7?'🏆🏆': q.score>=5?'🏆':'💪';
+  $('qFeedback').className='feedback ' + (q.score>=5?'ok':'bad');
+  $('qFeedback').textContent = `${star}  完成！本局得分 ${q.score} / ${q.total}　最佳紀錄 ${state.bestQuiz}`;
+  $('qHint').textContent='按「重新開始」再玩一次';
+  $('qPlay').disabled=true; $('qPlay').classList.remove('playing');
+  $('qOptions').innerHTML=''; $('qNext').style.display='none';
+}
+$('qPlay').addEventListener('click', ()=>{ if(q.current){ say(q.current.w); flashPlay(); } });
+$('qNext').addEventListener('click', nextQuestion);
+$('qRestart').addEventListener('click', startQuiz);
+document.addEventListener('keydown', e=>{
+  if($('panel-quiz').classList.contains('active') && !q.answered && '1234'.includes(e.key)){
+    const idx = parseInt(e.key,10)-1;
+    const btns = document.querySelectorAll('#qOptions .opt');
+    if(btns[idx]) answer(btns[idx].textContent, btns[idx]);
+  }
+});
+
+/* ============================================================
+   6. 遊戲二：看圖配字
+   ============================================================ */
+const m = { pairs:[], picEls:[], wordEls:[], sel:-1, done:new Set(), moves:0, total:0 };
+
+function restartMatch(){
+  const src = shuffle(pool());
+  m.total = Math.min(6, src.length);
+  m.pairs = src.slice(0, m.total);
+  m.sel = -1; m.done = new Set(); m.moves = 0;
+  $('mDone').textContent=0; $('mTotal').textContent=m.total; $('mMoves').textContent=0;
+  $('mBest').textContent = state.bestMatch ?? '–';
+  $('mResult').textContent='';
+
+  const picOrder = shuffle(m.pairs.map((_,i)=>i));
+  const wordOrder = shuffle(m.pairs.map((_,i)=>i));
+
+  const pBox=$('mPics'); pBox.innerHTML='';
+  picOrder.forEach((idx,k)=>{
+    const b=document.createElement('button');
+    b.className='pic'; b.textContent=m.pairs[idx].emoji; b.dataset.idx=idx;
+    b.setAttribute('aria-label','圖片 '+(k+1));
+    b.addEventListener('click', ()=>pickPic(idx,b));
+    pBox.appendChild(b);
+  });
+
+  const wBox=$('mWords'); wBox.innerHTML='';
+  wordOrder.forEach((idx)=>{
+    const b=document.createElement('button');
+    b.className='wordbtn'; b.textContent=m.pairs[idx].w; b.dataset.idx=idx;
+    b.addEventListener('click', ()=>pickWord(idx,b));
+    wBox.appendChild(b);
+  });
+}
+function pickPic(idx, el){
+  if(m.done.has(idx)) return;
+  document.querySelectorAll('#mPics .pic').forEach(p=>p.classList.remove('sel'));
+  el.classList.add('sel');
+  m.sel = idx;
+}
+function pickWord(idx, el){
+  say(m.pairs[idx].w);
+  if(m.done.has(idx)) return;
+  if(m.sel===-1){
+    el.classList.add('err'); setTimeout(()=>el.classList.remove('err'),400);
+    return;
+  }
+  m.moves++;
+  $('mMoves').textContent=m.moves;
+  const picEl = document.querySelector(`#mPics .pic[data-idx="${m.sel}"]`);
+  if(m.sel===idx){
+    m.done.add(idx);
+    picEl.classList.add('done'); picEl.classList.remove('sel');
+    el.classList.add('done'); el.disabled=true;
+    $('mDone').textContent=m.done.size;
+    m.sel=-1;
+    if(m.done.size===m.total){
+      const perfect = m.moves===m.total ? '🌟 完美！一次全對！' : '🎉 全部配對完成！';
+      $('mResult').textContent = `${perfect} 共 ${m.moves} 步`;
+      if(state.bestMatch===null || m.moves<state.bestMatch){ state.bestMatch=m.moves; store.set('bestMatch',m.moves); }
+      $('mBest').textContent=state.bestMatch;
+    }
+  }else{
+    el.classList.add('err'); picEl.classList.add('err');
+    setTimeout(()=>{ el.classList.remove('err'); picEl.classList.remove('err'); },400);
+    m.sel=-1;
+    document.querySelectorAll('#mPics .pic').forEach(p=>p.classList.remove('sel'));
+  }
+}
+$('mRestart').addEventListener('click', restartMatch);
+
+/* ============================================================
+   7. 分頁切換 & 設定
+   ============================================================ */
+document.querySelectorAll('nav.tabs button').forEach(b=>{
+  b.addEventListener('click', ()=>{
+    document.querySelectorAll('nav.tabs button').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    b.classList.add('active');
+    $('panel-'+b.dataset.tab).classList.add('active');
+  });
+});
+$('voiceSel').addEventListener('change', e=>{ voiceURI=e.target.value; localStorage.setItem('abcT.voice', voiceURI); say('car'); });
+$('accentSel').addEventListener('change', ()=>{ voiceURI=''; loadVoices(); say('car'); });
+$('rateSel').addEventListener('change', ()=>{ const r=parseFloat($('rateSel').value); localStorage.setItem('abcT.rate', r); say('car', r); });
+(function(){
+  const r = localStorage.getItem('abcT.rate');
+  if(r) $('rateSel').value = r;
+})();
+
+/* 初始化 */
+renderCards();
+renderLetterTable();
+resetQuiz();
+restartMatch();
+$('qBest').textContent = state.bestQuiz;
+
+/* 語音狀態連動 */
+SP.onState = (busy)=>{
+  const st = $('vStatus');
+  if(!st) return;
+  if(busy){
+    st.className = 'vstatus busy';
+    st.textContent = '🔊 朗讀中…';
+  }else{
+    st.className = 'vstatus ' + (voiceReady ? 'ok' : 'warn');
+    st.textContent = voiceReady
+      ? `🔊 已就緒：${voices.filter(v=>/^en/i.test(v.lang)).length||voices.length} 個語音`
+      : '⏳ 語音載入中…';
+  }
+};
+(function checkVoices(){
+  const en = voices.filter(v=>/^en/i.test(v.lang));
+  if(en.length){ voiceReady = true; setVoiceStatus('ok', `🔊 已就緒：${en.length} 個語音`); }
+  else if(voices.length){ voiceReady = true; setVoiceStatus('ok', `🔊 已就緒：${voices.length} 個語音`); }
+})();
+
+$('btnStop').addEventListener('click', ()=>{
+  stopAll();
+  document.querySelectorAll('.wl.hot').forEach(s=>s.classList.remove('hot'));
+  document.querySelectorAll('.act.busy').forEach(s=>s.classList.remove('busy'));
+  // 順便重置語音引擎，解除 Chrome 偶發的「卡住不發聲」
+  try{ synth.cancel(); synth.resume(); }catch(e){}
+  engineWarmed = false;
+  warmUpEngine();
+  toast('⏹ 已停止，語音引擎已重置');
+});
+$('btnTest').addEventListener('click', ()=>{
+  saySeq([
+    {text:'Hello! I am a car.', rate:1},
+    {text:'ambulance, bus, canoe.', rate:1}
+  ], 300);
+});
+
+/* 錄音相關 */
+$('recToggle').addEventListener('change', e=>{ recUse = e.target.checked; });
+$('btnClearRec').addEventListener('click', ()=>{
+  if(!confirm('確定要刪除所有錄音嗎？')) return;
+  recs = {}; store.set('rec', recs);
+  updateRecUI(); renderCards();
+  toast('🗑 已清除所有錄音');
+});
+updateRecUI();
+if(recSupported()){
+  $('recToggleWrap').style.display = 'flex';
+  $('recToggle').checked = recUse;
+}
+</script>
+</body>
+</html>
